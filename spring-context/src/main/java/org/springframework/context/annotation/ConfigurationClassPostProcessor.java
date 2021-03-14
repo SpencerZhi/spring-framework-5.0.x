@@ -270,8 +270,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
 		/**
-		 * Full
-		 * Lite
+		 * Full  加了@configuration
+		 * Lite  没加
 		 */
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);

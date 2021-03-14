@@ -292,8 +292,8 @@ class ConfigurationClassParser {
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
-				//扫描普通类=componentScan=com.luban
-				//这里扫描出来所有@@Component
+				//扫描普通类  componentScan = com.luban
+				//这里扫描出来所有加了@Component的类
 				//并且把扫描的出来的普通bean放到map当中
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
@@ -318,9 +318,9 @@ class ConfigurationClassParser {
 		 */
 		// Process any @Import annotations
 		//处理@Import  imports 3种情况
-		//ImportSelector
-		//普通类
-		//ImportBeanDefinitionRegistrar
+		//1.ImportSelector
+		//2.普通类
+		//3.ImportBeanDefinitionRegistrar
 		//这里和内部地柜调用时候的情况不同
 		/**
 		 * 这里处理的import是需要判断我们的类当中时候有@Import注解
