@@ -62,7 +62,10 @@
 ConfigurationClassPostProcessor impl beanDefinitionRegisttryPostProcessor extends beanFactoryProcessor
 		
 beanFactoryProcessor 与 beanPostProcessor
-		
-		
-		
-		
+
+
+### bean的注册
+1.普通类       扫描之后直接注册到map中
+2.import selector     先放在configurationClasses中， 然后再注册（loadbeanDefinition）
+3.Registrar       先放在importBeanDefinitionRegistrar中 ，然后注册
+4.import 普通类   先放在configurationClasses中， 然后再注册（loadbean）
