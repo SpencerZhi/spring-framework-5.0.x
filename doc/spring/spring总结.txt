@@ -69,3 +69,11 @@ beanFactoryProcessor 与 beanPostProcessor
 2.import selector     先放在configurationClasses中， 然后再注册（loadbeanDefinition）
 3.Registrar       先放在importBeanDefinitionRegistrar中 ，然后注册
 4.import 普通类   先放在configurationClasses中， 然后再注册（loadbean）
+
+
+
+
+### byName ,byType
+
+byName: 先找set属性名，没有的话找属性
+byType: set
