@@ -88,19 +88,31 @@
 	
 ```
 
-## 三、mybatis流程分析
 
+
+
+
+## 三、mybatis流程分析
 ```
 	首先 mybatis源码分两种情况：
 		1.单独的 mybatis
 		2.与 spring整合的 mybatis
-	
 	这两种情况下的源码分析会有所不同，如果是 spring-mybatis模式，那 mybatis就是从 spring初始化开始
 
-    mybatis -- sqlSession -- defaultSqlSession -- defaultSqlSession.select -- sql
-	spring-mybatis -- sqlSession -- sqlSessionTemplate -- sqlSessionTemplate.select -- proxy.invoke -- select -- sql
+    1.mybatis -- sqlSession接口 -- defaultSqlSession -- defaultSqlSession.select -- sql
+	2.spring-mybatis -- sqlSession接口 -- sqlSessionTemplate -- sqlSessionTemplate.select -- proxy.invoke -- select -- sql
+	
+概念：
+	1.FactoryBean  --impl-   SqlSessionFactoryBean  -- 创建sqlSessionFactory -- 注入给SqlSessionTemplete
+    2.SqlSession接口 ---impl--- SqlSessionTemplete  --- sqlSessionProxy.<T> selectOne
 
 ```
+#### 1.Spring 加载SqlSessionFactory
+```
+   提供了SqlSessionFactoryBean
+   FactoryBean  --impl-   SqlSessionFactoryBean  -- 创建sqlSessionFactory
+```
+
 
 #### 1、spring跟 mybatis整合的流程
 
@@ -137,24 +149,17 @@ SpringBean实例化之中和之后：
 #### 2、spring-mybatis的关联点有哪些？
 
 ```
-1、@MapperScan
+1、@MapperScan   
+    利用spring中的Import和 ImportBeanDefinitionRegistrar技术获取MapperFactoryBean
 
-2、两个代理类 1.sqlsessionTemplete 2.sqlSessionFactoryBean
+2、两个代理类 
+    1.sqlsessionTemplete : 利用代理对象执行sql
+    2.sqlSessionFactoryBean：生成sqlSessionFactory 给sqlsessionTemplete的代理对象用
 
-	如果精通spring的应该知道，@MapperScan 的源码就是用 spring中的 Import和 ImportBeanDefinitionRegistrar技术来对 spring进行扩展。
-	再对比 @BeanSqlSessionFactoryBean就会知道 spring会首先执行 ImportBeanDefinitionRegistrar当中的 registerBeanDefinition方法。
+	//再对比 @Bean SqlSessionFactoryBean就会知道 spring会首先执行 ImportBeanDefinitionRegistrar当中的 registerBeanDefinition方法。
 ```
 
-#### 3、mybatis如何解析  mapper？有几种方式？
-
-```
-4种	url、resource、class、package	
-<mappers>
-    <mapper url= "org/mybatis/example/BlogMapper.xml">
-</mappers>
-```
-
-#### 4、spring-mybatis自动装配
+#### 3、spring-mybatis自动装配
 
 ```
 首先了解知识点：
@@ -184,3 +189,12 @@ mybatis在 spring中自动装配的属性有哪些?  MapperFactoryBean
 	自动装配的时候，如果属性是 class、Date、String、Url、Uri等简单类型，或没有 set方法，或已经自行装配的，则直接忽略。
 ```
 
+
+#### 4、mybatis如何解析  mapper？有几种方式？
+
+```
+4种	url、resource、class、package	
+<mappers>
+    <mapper url= "org/mybatis/example/BlogMapper.xml">
+</mappers>
+```
