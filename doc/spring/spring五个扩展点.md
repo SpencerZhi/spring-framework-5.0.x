@@ -4,7 +4,8 @@
 
 2、BeanFactoryPostProcessor			
     springBean被容器中任意一个bean被实例化之前来回调它的方法，主要针对beanFactory来建设
-    经典场景：ConfigurationClassPostProcessor #postProcessBeanFactory 针对配置类加上cglib代理
+    经典场景：ConfigurationClassPostProcessor #postProcessBeanFactory 针对配置类加上cglib代理。 
+             在bean被实例化之前，改变注入模型3， 可实现不用@autowired ,实现构造方法 自动装配（mybatis mapperFactoryBean）
 
 3、BeanDefinitionRegistryPostProcessor		
     BeanFactoryPostProcessor的子类。在BeanFactoryPostProcessor之前执行，why？

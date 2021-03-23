@@ -71,9 +71,32 @@ beanFactoryProcessor 与 beanPostProcessor
 4.import 普通类   先放在configurationClasses中， 然后再注册（loadbean）
 
 
+### Spring生命周期
+1.调用reflash();
+2.准备工厂perpareBeanFactory
+3.执行beanFactoryPostProcessor去解析spring注解类（配置类），解析完成后变成bd放入bdMap当中。 #invokeBeanFactoryPostProcessor
+4.注册后置处理器beanPostProcessor #registerBeanPostProcessor
+5.开始实例化单例bean
+#finishBeanFactoryInitialization , #preInstantiateSingletons ,#getBean , #doGetBean ,#createBean(beanName, mbd, args) ,#doCreateBean
+6.在实例化单例bean的过程当中，他会在9个地方分别执行5个后置处理器。
 
 
-### byName ,byType
 
-byName: 先找set属性名，没有的话找属性
-byType: set
+
+### 找到一个目标对象完成注入;
+1.byName: 先找set属性名，没有的话找属性
+2.byType: set
+
+### 依赖注入（填充属性）的三种方式：
+1.属性通过反射获取到属性对象field， field.set(x)
+2.set方法
+    SetX(x){
+       this.x = x
+    }
+3.构造方法
+
+
+
+
+
+

@@ -125,8 +125,10 @@ RequiredAnnotationBeanPostProcessor	处理@Require，生成Bean时某属性必�
 
 ```
 大体流程
-	new -> beanPostProcessor -> doCreateBean() -> beanWarpper -> 通过一系列的后置处理器完成bean的初始化
+	new -> beanPostProcessor -> doCreateBean() -> beanWarpper -> 
+	执行spring当中所有的后置处理器,完成bean的初始化.（执行before,生命周期回调的init,@postConstract,after）
 ```
+
 
 ##### 13、自动装配 NO 跟 ByType有什么区别？
 
@@ -137,7 +139,7 @@ NO == byType技术
 spring默认 NO
 
 伪代码如下：
-Lcx lcx{
+Zss zss{
   
   @Autowired  
   Test test;
