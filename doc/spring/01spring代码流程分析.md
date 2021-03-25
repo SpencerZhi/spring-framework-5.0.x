@@ -1,3 +1,5 @@
+### Spring 代码流程分析：
+```
 1.构造方法中初始化工厂  DefaultListableBeanFactory
 
 2.实例化AnnotatedBeanDefinitionReader
@@ -50,51 +52,7 @@
 									2.registerBeanDefinition 往map中注册
 										1.scanCandidateComponents 
 							2.processImports 处理@import 3种情况.(ImportSelector,普通类,ImportBeanDefinitionRegistrar)
-	  
-		
-		
-		
-		
-		
-		
-		
-		
-ConfigurationClassPostProcessor impl beanDefinitionRegisttryPostProcessor extends beanFactoryProcessor
-		
-beanFactoryProcessor 与 beanPostProcessor
-
-
-### bean的注册
-1.普通类       扫描之后直接注册到map中
-2.import selector     先放在configurationClasses中， 然后再注册（loadbeanDefinition）
-3.Registrar       先放在importBeanDefinitionRegistrar中 ，然后注册
-4.import 普通类   先放在configurationClasses中， 然后再注册（loadbean）
-
-
-### Spring生命周期
-1.调用reflash();
-2.准备工厂perpareBeanFactory
-3.执行beanFactoryPostProcessor去解析spring注解类（配置类），解析完成后变成bd放入bdMap当中。 #invokeBeanFactoryPostProcessor
-4.注册后置处理器beanPostProcessor #registerBeanPostProcessor
-5.开始实例化单例bean
-#finishBeanFactoryInitialization , #preInstantiateSingletons ,#getBean , #doGetBean ,#createBean(beanName, mbd, args) ,#doCreateBean
-6.在实例化单例bean的过程当中，他会在9个地方分别执行5个后置处理器。
-
-
-
-
-### 找到一个目标对象完成注入;
-1.byName: 先找set属性名，没有的话找属性
-2.byType: set
-
-### 依赖注入（填充属性）的三种方式：
-1.属性通过反射获取到属性对象field， field.set(x)
-2.set方法
-    SetX(x){
-       this.x = x
-    }
-3.构造方法
-
+```
 
 
 

@@ -1,11 +1,13 @@
+### Spring 五个扩展点：
+```
 1、BeanPostProcessor			    通过CommonAnnotationBeanPostProcessor类处理
-    插手Bean实例化过程、实例化之后(new出来之后，产生了bd)，在bean放到bean容器管理之前处理
+    插手Bean初始化过程、实例化之后(new出来之后，产生了bd)，在bean放到bean容器管理之前处理
     经典场景：@PostConstruct、AOP
 
 2、BeanFactoryPostProcessor			
     springBean被容器中任意一个bean被实例化之前来回调它的方法，主要针对beanFactory来建设
     经典场景：ConfigurationClassPostProcessor #postProcessBeanFactory 针对配置类加上cglib代理。 
-             在bean被实例化之前，改变注入模型3， 可实现不用@autowired ,实现构造方法 自动装配（mybatis mapperFactoryBean）
+             在bean被实例化之前，改变注入模型3，通过构造， 可实现不用@autowired ,实现构造方法 自动装配（mybatis mapperFactoryBean）
 
 3、BeanDefinitionRegistryPostProcessor		
     BeanFactoryPostProcessor的子类。在BeanFactoryPostProcessor之前执行，why？
@@ -21,4 +23,4 @@
 5、ImportBeanDefinitionRegistrar		
     registerBeanDefinitions()方法可以得到 BeanDefinitionRegistry注册器，所以可以动态改变添加bd。selector能做的事情，registrar都能做，反之则不可
     经典场景：Mybatis的mapperScan
-    
+```  

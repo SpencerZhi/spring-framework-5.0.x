@@ -201,3 +201,45 @@ public static void main(String[] args) {
 	}
 ```
 
+
+##### bean的注册
+```
+1.普通类       扫描之后直接注册到map中
+2.import selector     先放在configurationClasses中， 然后再注册（loadbeanDefinition）
+3.Registrar       先放在importBeanDefinitionRegistrar中 ，然后注册
+4.import 普通类   先放在configurationClasses中， 然后再注册（loadbean）
+```
+
+##### 找到一个目标对象完成注入;
+```
+1.byName: 先找set属性名，没有的话找属性
+2.byType: set
+```
+
+##### 依赖注入（填充属性）的三种方式：
+```
+1.属性通过反射获取到属性对象field， field.set(x)
+2.set方法
+    SetX(x){
+       this.x = x
+    }
+3.构造方法
+```
+
+
+##### Spring生命周期
+```
+1.AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
+在AnnotationConfigApplicationContext构造方法中初始化工厂,DefaultListableBeanFactory
+
+2.然后实例化Reader，Scanner。reader里面主要往工厂添加BeanDefinitionMap，BeanDefinitionNames。同时往BeanDefinitionMap注册6个bd。5个是beanPostProcessor,1个是beanFactoryProcessor
+
+3.调用refresh();
+refresh()方法里主要是： prepareRefresh准备工作（设置启动时间），obtainFreshBeanFactory()得到工厂，prepareBeanFactory准备工厂，
+invokeBeanFactoryPostProcessors（最重要的是ConfigurationClassPostProcessor，主要是去解析spring注解类（配置类），解析完成后将配置类变成bd放入bdMap当中）
+
+4.注册后置处理器beanPostProcessor。这里只是维护还未使用。 beanPostProcessor插手Bean初始化过程、实例化前后(new出来之后，产生了bd)，在bean放到bean容器管理之前处理
+
+5.开始实例化单例bean，在实例化单例bean的过程当中，他会在9个地方分别执行5个后置处理器。
+#finishBeanFactoryInitialization , #preInstantiateSingletons ,#getBean , #doGetBean ,#createBean(beanName, mbd, args) ,#doCreateBean
+```
