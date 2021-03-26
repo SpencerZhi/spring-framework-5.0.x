@@ -36,7 +36,8 @@ cityService  -------------------BeanPostProcessor---------------postProcessAfter
 
 
 bean初始化过程：当bean已经new出来了，并且已经完成了属性的填充（自动装配）
-bean初始化顺序：construct --->postProcessBeforeInitialization --> @postConstruct init方法 --> postProcessAfterInitialization
+bean初始化顺序：static  --->construct --->postProcessBeforeInitialization --> @postConstruct init方法 --> postProcessAfterInitialization
+java对象初始化春旭
 
 第七次 BeanPostProcessor----postProcessBeforeInitialization()
         bean初始化之前执行

@@ -1,7 +1,7 @@
 ### Spring 五个扩展点：
 ```
 1、BeanPostProcessor			    通过CommonAnnotationBeanPostProcessor类处理
-    插手Bean初始化过程、实例化之后(new出来之后，产生了bd)，在bean放到bean容器管理之前处理
+    插手Bean初始化过程、实例化前后(new出来之后，产生了bd)，在bean放到bean容器管理之前处理
     经典场景：@PostConstruct、AOP
 
 2、BeanFactoryPostProcessor			

@@ -1,13 +1,18 @@
 ### 关于依赖注入
 
 ```
-怎么寻找依赖对象？
-	1、byName	2、byType
+怎么找到一个目标对象完成注入？
+	1.byName: 先找set属性名，没有的话找属性
+    2.byType: set
 
-怎么填充属性？
-	0、反射  field.set	1、构造器		2、反射 set方法	这里的序号是 autowireMode的值
+依赖注入（填充属性）的三种方式？
+	1.属性通过反射获取到属性对象field， field.set(x)
+    2.set方法
+        SetX(x){
+           this.x = x
+        }
+    3.构造方法
 	
-
 @Autowired	使用byType，找不到就 byName，找到后默认用反射 field.set的方式完成填充
 		如果在 set方法上加 @Autowired，那就用 set方法填充
 
@@ -109,17 +114,15 @@ RequiredAnnotationBeanPostProcessor	处理@Require，生成Bean时某属性必�
 	具体信息待补充
 ```
 
-##### 11、三种 import的使用
+##### 11、三种 import的使用（bean的注册）
 
 ```
-	普通类							扫描完成后注册
-	
-	1.importSelector				  扫描出来先放到configurationClasses变量，后面解析出来进行注册  loadBeanDefinition
-	
-	2.importBeanDefinitionRegistrar	  扫描出来先放到importBeanDefinitionRegistrars变量，后面解析出来进行注册
-	
-	3.import普通类						扫描出来先放到configurationClasses变量，然后直接注册
+    1.普通类           扫描之后直接注册到map中
+    2.importSelector     先放在configurationClasses变量中， 然后再注册（loadbeanDefinition）
+    3.importBeanDefinitionRegistrar       先放在importBeanDefinitionRegistrar变量中 ，然后注册
+    4.import 普通类   先放在configurationClasses中， 然后再注册（loadbean）
 ```
+
 
 ##### 12、bean初始化过程？
 
@@ -162,7 +165,7 @@ Zss zss{
 具体待补充
 ```
 
-```java
+```
 public static void main(String[] args) {
 		// 准备spring所有环境
 		// 准备工程 = DefaultListableBeanFactory
@@ -202,29 +205,6 @@ public static void main(String[] args) {
 ```
 
 
-##### bean的注册
-```
-1.普通类       扫描之后直接注册到map中
-2.import selector     先放在configurationClasses中， 然后再注册（loadbeanDefinition）
-3.Registrar       先放在importBeanDefinitionRegistrar中 ，然后注册
-4.import 普通类   先放在configurationClasses中， 然后再注册（loadbean）
-```
-
-##### 找到一个目标对象完成注入;
-```
-1.byName: 先找set属性名，没有的话找属性
-2.byType: set
-```
-
-##### 依赖注入（填充属性）的三种方式：
-```
-1.属性通过反射获取到属性对象field， field.set(x)
-2.set方法
-    SetX(x){
-       this.x = x
-    }
-3.构造方法
-```
 
 
 ##### Spring生命周期
