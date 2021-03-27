@@ -92,8 +92,9 @@
 
 
 
-## 三、mybatis流程分析
+## 三、mybatis执行sql流程分析
 ```
+
 	首先 mybatis源码分两种情况：
 		1.单独的 mybatis
 		2.与 spring整合的 mybatis
@@ -102,17 +103,11 @@
     1.mybatis -- sqlSession接口 -- defaultSqlSession -- defaultSqlSession.select -- sql
 	2.spring-mybatis -- sqlSession接口 -- sqlSessionTemplate -- sqlSessionTemplate.select -- proxy.invoke -- select -- sql
 	
-概念：
+概念： spring加载mybatis的桥梁：SqlSessionFactoryBean
 	1.FactoryBean  --impl-   SqlSessionFactoryBean  -- 创建sqlSessionFactory -- 注入给SqlSessionTemplete
     2.SqlSession接口 ---impl--- SqlSessionTemplete  --- sqlSessionProxy.<T> selectOne
 
 ```
-#### 1.Spring 加载SqlSessionFactory
-```
-   提供了SqlSessionFactoryBean
-   FactoryBean  --impl-   SqlSessionFactoryBean  -- 创建sqlSessionFactory
-```
-
 
 #### 1、spring跟 mybatis整合的流程
 
@@ -129,19 +124,19 @@ SpringBean实例化之中和之后：
 	1.这里 spring的扩展点主要是 afterPropertiesSet.而且当对象被实例化之后，它实例化的是 MapperFactoryBean。
 	2.MapperFactoryBean实现 InitializingBean接口，这个接口调用 afterPropertiesSet方法，
 	3.会再调用子类的 checkDao()，checkDao()里面有行代码是 configuration.addMapper(this.mapperInterface)，里面传参是当前接口。
-	4.在这个 addMapper()里面会解析mapper接口里面所有方法、传参，最后注册到 configuration中(我们理解为就是一个 mapper，又可以理解为它就是获得自己的信息，然后缓存起来放到一个 map中) 	
+	4.在这个 addMapper()里面会解析mapper接口里面所有方法、传参，最后注册到 configuration类中(我们理解为就是一个 mapper，又可以理解为它就是获得自己的信息，然后缓存起来放到一个 map中) 	
 调用链：
-	org.apache.ibatis.session.Configuration#mappedStatements
+    org.mybatis.spring.mapper.MapperFactoryBean
 	org.springframework.dao.support.DaoSupport#afterPropertiesSet
 	org.mybatis.spring.mapper.MapperFactoryBean#checkDaoConfig
 	org.apache.ibatis.session.Configuration#addMapper
 	org.apache.ibatis.binding.MapperRegistry#addMapper
 	org.apache.ibatis.builder.annotation.MapperAnnotationBuilder#parse
 	
-	mybatis开发了一个类，继承了DaoSupport并重写了里面的 checkDaoConfig，这个是个抽象方法，会调用子类的这个方法。
+	mybatis开发了一个MapperFactoryBean类，继承了DaoSupport并重写了里面的 checkDaoConfig，这个是个抽象方法，会调用子类的这个方法。
 	
 	整合流程：
-	mapper -->bd -->放入bdMap -->实例化mapper变成 mapperFactoryBean -->  afterPropertiesSet -->checkDaoConfig() --> configuration.addMapper() --> 放入自己的mapper
+	mapper -->bd -->放入bdMap -->实例化mapper变成 mapperFactoryBean -->  afterPropertiesSet -->checkDaoConfig() --> configuration.addMapper() --> 将所有的sql放入自己的mapper
 ```
 
 
